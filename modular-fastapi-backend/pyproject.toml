@@ -1,0 +1,27 @@
+[tool]
+name = "modular-fastapi-backend"
+version = "0.1.0"
+description = "A modular FastAPI backend project with Document Ingestion and Conversational RAG APIs."
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependencies]
+fastapi = "^0.95.0"
+uvicorn = "^0.22.0"
+sqlalchemy = "^1.4.47"
+pydantic = "^1.10.7"
+redis = "^4.5.0"
+alembic = "^1.10.3"
+python-dotenv = "^0.21.0"
+
+[dev-dependencies]
+pytest = "^7.2.0"
+httpx = "^0.24.0"
+mypy = "^0.991"
+black = "^22.3.0"
+isort = "^5.10.1"
+flake8 = "^4.0.1"

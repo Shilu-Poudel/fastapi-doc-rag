@@ -25,14 +25,31 @@ async def chat_endpoint(payload: ChatRequest) -> ChatResponse:
     emb = EmbeddingService()
     mem = RedisMemory()
 
-    # Booking detection - simple heuristic / entity extraction
+    # Booking detection - LLM-powered entity extraction
     booking = BookingHandler()
     if booking.detect_booking_intent(payload.query):
         booking_info = booking.extract_booking_details(payload.query)
         if booking_info:
             saved = booking.save_booking(booking_info)
-            # create confirmation text
-            confirmation = f"Booking confirmed for {saved.name} at {saved.date} {saved.time} (id: {saved.id})."
+            
+            # Generate natural confirmation message using LLM
+            confirmation_prompt = f"""Generate a friendly, professional confirmation message for an interview booking.
+
+Booking details:
+- Name: {saved.name}
+- Email: {saved.email}
+- Date: {saved.date}
+- Time: {saved.time}
+- Booking ID: {saved.id}
+
+Write a warm confirmation message (2-3 sentences). Be conversational and professional."""
+
+            confirmation = call_groq_completion(confirmation_prompt, max_tokens=150, temperature=0.7)
+            
+            # Fallback to simple message if LLM fails
+            if not confirmation or "sorry" in confirmation.lower():
+                confirmation = f"Booking confirmed for {saved.name} at {saved.date} {saved.time}. A confirmation email will be sent to {saved.email}. Your booking ID is {saved.id}."
+            
             # persist chat
             await mem.append_message(payload.user_id, {"role": "user", "content": payload.query})
             await mem.append_message(payload.user_id, {"role": "assistant", "content": confirmation})

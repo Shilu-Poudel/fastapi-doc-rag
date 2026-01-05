@@ -1,11 +1,11 @@
-from typing import Dict, Optional
+from typing import Dict
 from fastapi import APIRouter, File, UploadFile, Query, HTTPException
 from fastapi.responses import JSONResponse
 from app.services.text_extractor import extract_text_from_file
 from app.utils.chunking import chunk_text_fixed, chunk_text_sentences
 from app.services.embeddings import EmbeddingService
 from app.services.vectorstore import VectorStore
-from app.utils.db import get_db_session, init_db, FileChunkMeta, Base
+from app.utils.db import get_db_session, init_db, FileChunkMeta
 
 router = APIRouter()
 
@@ -25,11 +25,11 @@ async def ingest_file(
     - chunk_size: tokens for fixed strategy (approx by whitespace tokens)
     """
     if file.content_type not in ("application/pdf", "text/plain"):
-        raise HTTPException(status_code=400, detail="Only .pdf or .txt files supported")
+        raise HTTPException(status_code=400, detail="Invalid file content")
 
     raw_text = await extract_text_from_file(file)
     if not raw_text.strip():
-        raise HTTPException(status_code=400, detail="No text extracted from file")
+        raise HTTPException(status_code=400, detail="Invalid file content")
 
     # Chunking
     if chunking_strategy == "fixed":
@@ -52,4 +52,4 @@ async def ingest_file(
         session.commit()
         saved_meta.append({"chunk_id": idx, "embedding_id": str(vec_id)})
 
-    return JSONResponse({"status": "success", "file": file.filename, "chunks": len(chunks), "saved": saved_meta})
+    return JSONResponse({"message": "Document ingested successfully"})

@@ -1,21 +1,12 @@
 from typing import Dict, List
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
 from app.services.vectorstore import VectorStore
 from app.utils.redis_memory import RedisMemory
 from app.services.booking_handler import BookingHandler
-from app.services.embeddings import EmbeddingService
-from app.services.booking_handler import BookingResult
+from app.services.embeddings import EmbeddingService, call_groq_completion
+from app.schemas.rag import ChatRequest, ChatResponse
 
 router = APIRouter()
-
-class ChatRequest(BaseModel):
-    user_id: str
-    query: str
-    top_k: int = 5
-
-class ChatResponse(BaseModel):
-    reply: str
 
 @router.post("", response_model=ChatResponse)
 async def chat_endpoint(payload: ChatRequest) -> ChatResponse:
@@ -26,6 +17,10 @@ async def chat_endpoint(payload: ChatRequest) -> ChatResponse:
     - Call Groq LLM and return response
     - Save conversation in Redis
     """
+    # Basic validation to match tests
+    if not payload.query or not payload.query.strip():
+        raise HTTPException(status_code=400, detail="Query cannot be empty.")
+
     vs = VectorStore()
     emb = EmbeddingService()
     mem = RedisMemory()
@@ -41,7 +36,7 @@ async def chat_endpoint(payload: ChatRequest) -> ChatResponse:
             # persist chat
             await mem.append_message(payload.user_id, {"role": "user", "content": payload.query})
             await mem.append_message(payload.user_id, {"role": "assistant", "content": confirmation})
-            return ChatResponse(reply=confirmation)
+            return ChatResponse(response=confirmation, conversation_id=payload.user_id)
 
     # embed the query for similarity search
     query_emb = emb.embed_text(payload.query)
@@ -64,11 +59,10 @@ async def chat_endpoint(payload: ChatRequest) -> ChatResponse:
     )
 
     # call LLM (Groq)
-    from app.services.embeddings import call_groq_completion
     reply = call_groq_completion(prompt)
 
     # save messages
     await mem.append_message(payload.user_id, {"role": "user", "content": payload.query})
     await mem.append_message(payload.user_id, {"role": "assistant", "content": reply})
 
-    return ChatResponse(reply=reply)
+    return ChatResponse(response=reply, conversation_id=payload.user_id)

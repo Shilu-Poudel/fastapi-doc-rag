@@ -7,12 +7,15 @@ class Settings(BaseSettings):
     debug: bool = False
 
     # Database settings
-    database_url: str
+    database_url: str = "sqlite:///./app.db"
 
     # Redis settings
-    redis_url: str
+    redis_url: str = "redis://localhost:6379/0"
 
-    class Config:
-        env_file = ".env"
+    # Pydantic v2: use model_config instead of deprecated Config
+    model_config = {
+        "env_file": ".env",
+        "env_prefix": "",
+    }
 
 settings = Settings()

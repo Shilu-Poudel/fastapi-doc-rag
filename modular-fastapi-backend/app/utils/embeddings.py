@@ -1,7 +1,10 @@
-from typing import List
+from typing import List, Protocol
 import numpy as np
 
-def generate_embeddings(texts: List[str], model) -> np.ndarray:
+class EncoderModel(Protocol):
+    def encode(self, texts: List[str]) -> np.ndarray: ...
+
+def generate_embeddings(texts: List[str], model: EncoderModel) -> np.ndarray:
     """
     Generate embeddings for a list of texts using the specified model.
 

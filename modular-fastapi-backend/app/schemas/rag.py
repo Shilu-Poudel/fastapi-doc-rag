@@ -5,6 +5,7 @@ class ChatRequest(BaseModel):
     user_id: str
     query: str
     context: Optional[str] = None
+    top_k: int = 5
 
 class ChatResponse(BaseModel):
     response: str

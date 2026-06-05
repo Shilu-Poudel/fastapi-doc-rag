@@ -4,6 +4,8 @@ A FastAPI backend with two REST APIs: a document ingestion pipeline and an
 agentic Retrieval-Augmented Generation (RAG) service with conversational memory
 and interview booking.
 
+![Booking confirmation email](docs/images/booking-email.png)
+
 ## Features
 
 - Document ingestion: upload PDF/TXT, extract text, chunk, embed, and store

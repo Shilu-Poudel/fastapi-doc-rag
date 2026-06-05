@@ -24,7 +24,7 @@ def send_booking_confirmation(
     message.set_content(
         f"Hello {full_name},\n\n"
         f"Your interview has been booked for {date} at {time}.\n\n"
-        "Regards,\nPalmMind Recruitment"
+        "Regards,\nRecruitment Team"
     )
 
     try:

@@ -91,6 +91,17 @@ Euclidean, with interpretable bounded scores. **Dot product** is an equally
 accurate, slightly cheaper alternative when vectors are pre-normalized.
 **Euclidean** is not recommended here - same accuracy, no interpretability gain.
 
+### When would they differ?
+
+The three metrics are equivalent here only because the embeddings are
+(near) unit length. They diverge when vectors are **not normalized**, so that
+magnitude carries meaning - for example with raw TF-IDF or count vectors, where a
+longer document has a larger magnitude. In that case the dot product is biased
+toward high-magnitude vectors (longer documents), while cosine cancels magnitude
+out and compares direction only. This is exactly why cosine is the standard
+default for text retrieval. The sentence-transformer embeddings used here are
+already near unit length, so that bias does not appear and the metrics coincide.
+
 ## Reproducing
 
 ```bash

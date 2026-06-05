@@ -1,8 +1,17 @@
 import smtplib
+from datetime import datetime
 from email.message import EmailMessage
 
 from app.core.config import settings
 from app.core.logging import logger
+
+
+def _format_time(time: str) -> str:
+    """Render a stored 24-hour HH:MM time as 12-hour with AM/PM."""
+    try:
+        return datetime.strptime(time, "%H:%M").strftime("%I:%M %p")
+    except ValueError:
+        return time
 
 
 def send_booking_confirmation(
@@ -23,7 +32,7 @@ def send_booking_confirmation(
     message["To"] = to_email
     message.set_content(
         f"Hello {full_name},\n\n"
-        f"Your interview has been booked for {date} at {time}.\n\n"
+        f"Your interview has been booked for {date} at {_format_time(time)}.\n\n"
         "Regards,\nRecruitment Team"
     )
 

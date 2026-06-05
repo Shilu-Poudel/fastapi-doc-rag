@@ -12,7 +12,7 @@ from app.services.embeddings import embed_text
 from app.services.vectorstore import QdrantStore
 
 SYSTEM_PROMPT = (
-    "You are a helpful assistant for PalmMind. "
+    "You are a helpful recruitment assistant. "
     "Use the retrieve_context tool to answer questions about ingested documents, "
     "and answer only from the retrieved context. If the answer is not in the "
     "context, say you do not know. When the user wants to book an interview, "

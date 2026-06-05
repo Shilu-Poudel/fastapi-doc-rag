@@ -76,13 +76,13 @@ Upload a PDF or TXT document.
 
 ```bash
 curl -X POST "http://localhost:8001/api/v1/ingest?chunking_strategy=recursive" \
-  -F "file=@sample_content.txt;type=text/plain"
+  -F "file=@example.txt;type=text/plain"
 ```
 
 Response:
 ```json
 {
-  "file_name": "sample_content.txt",
+  "file_name": "example.txt",
   "chunking_strategy": "recursive",
   "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
   "chunks_ingested": 3

@@ -1,0 +1,49 @@
+Machine Learning and AI Reference Notes
+
+Supervised learning trains a model on labeled examples where every input has a known target output.
+Unsupervised learning discovers hidden structure in unlabeled data, for example by grouping similar points into clusters.
+Semi-supervised learning combines a small amount of labeled data with a large amount of unlabeled data during training.
+Reinforcement learning trains an agent to choose actions by giving rewards for good outcomes and penalties for bad ones.
+Self-supervised learning creates its own training labels from the raw data, such as predicting a masked word in a sentence.
+
+Precision measures the fraction of predicted positive cases that are actually correct.
+Recall measures the fraction of real positive cases that the model successfully identified.
+The F1 score is the harmonic mean of precision and recall, balancing the two into a single number.
+A confusion matrix is a table that counts true positives, false positives, true negatives, and false negatives.
+The ROC curve plots the true positive rate against the false positive rate at different decision thresholds.
+
+Overfitting happens when a model memorizes the training data including its noise and fails on new examples.
+Underfitting happens when a model is too simple to capture the underlying pattern, performing poorly even on training data.
+The bias-variance tradeoff describes balancing a model that is too simple against one that is too complex.
+L1 regularization, also called Lasso, drives some weights exactly to zero and produces sparse models.
+L2 regularization, also called Ridge, shrinks weights smoothly toward zero but rarely makes them exactly zero.
+Dropout randomly disables a fraction of neurons during training to reduce overfitting in neural networks.
+Early stopping halts training once validation performance stops improving to avoid overfitting.
+
+Gradient descent updates model parameters in the direction that reduces the loss function.
+Stochastic gradient descent updates parameters using one randomly chosen example at a time instead of the whole dataset.
+The learning rate controls how large each parameter update step is during optimization.
+Backpropagation computes gradients by applying the chain rule backward through the network layers.
+The vanishing gradient problem occurs when gradients shrink toward zero so early layers stop learning.
+The exploding gradient problem occurs when gradients grow uncontrollably large and destabilize training.
+
+A convolutional neural network uses sliding filters to capture local spatial patterns and excels at image recognition.
+A recurrent neural network maintains a hidden state across time steps and handles sequential data like text or audio.
+Long short-term memory networks add gates to a recurrent network so it can remember information over long sequences.
+The transformer architecture replaced recurrence with self-attention and was introduced in 2017.
+Self-attention lets each token in a sequence weigh the importance of every other token when forming its representation.
+A generative adversarial network pits a generator against a discriminator that learns to tell real data from fake.
+
+Word embeddings represent words as dense vectors so that words with similar meaning sit close together.
+Cosine similarity measures the angle between two vectors and ignores their magnitude.
+Euclidean distance measures the straight-line distance between two points in vector space.
+The dot product multiplies two vectors element-wise and sums the result, and grows with vector magnitude.
+A vector database stores embeddings and retrieves the nearest neighbors to a query vector.
+Approximate nearest neighbor search trades a little accuracy for much faster retrieval in large vector sets.
+
+Bagging trains many models on random subsets of the data in parallel and averages their predictions to reduce variance.
+Boosting trains models sequentially where each new model focuses on the errors made by the previous ones.
+A random forest is an ensemble of decision trees trained with bagging and random feature selection.
+K-means clustering partitions data into k groups by repeatedly assigning points to the nearest centroid.
+Principal component analysis reduces dimensionality by projecting data onto the directions of greatest variance.
+Transfer learning reuses a model pretrained on a large dataset and adapts it to a new related task.
